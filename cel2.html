@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Central European League 2 | Standings</title>
+<style>
+:root{
+  --bg:#0b1018;--panel:#121a25;--panel2:#182331;--line:#283647;
+  --text:#edf3fb;--muted:#8fa1b7;--accent:#b9f36b;--blue:#74b7ff;
+  --green:#173c31;--red:#40232a;--gold:#45391c;--cup:#c9a227;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 50% -20%,#203248 0,transparent 50%),var(--bg);color:var(--text);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}
+a{color:inherit}
+.topbar{height:68px;border-bottom:1px solid #253244;background:#0b1018d9;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,56px);gap:16px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:850;letter-spacing:.04em}
+.logo{width:38px;height:38px;border-radius:11px;background:var(--accent);color:#111a12;display:grid;place-items:center;font-weight:950;font-size:12px;box-shadow:0 0 24px #b9f36b25}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.19em;font-weight:700;margin-top:1px}
+.toplabel{color:var(--muted);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.wrap{max-width:1400px;margin:auto;padding:30px clamp(14px,3vw,40px) 52px}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:24px}
+.eyebrow{color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.19em;text-transform:uppercase;margin-bottom:8px}
+h1{font-size:clamp(32px,5vw,54px);line-height:1.02;letter-spacing:-.045em;margin:0;font-weight:850}
+.subtitle{color:var(--muted);margin:12px 0 0;font-size:14px}
+.season{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:11px 14px;color:#dce6f2;white-space:nowrap;font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:22px}
+.stat{background:linear-gradient(145deg,#172231,#111923);border:1px solid var(--line);border-radius:14px;padding:16px 18px;min-width:0}
+.stat .label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-weight:750}
+.stat .value{font-size:25px;font-weight:850;letter-spacing:-.04em;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat .detail{font-size:11px;color:var(--muted);margin-top:2px}
+.toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);padding:12px;border-radius:14px 14px 0 0}
+.tools-left,.tools-right{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.search{position:relative}
+.search input{width:min(300px,75vw);background:#0c131c;border:1px solid #2c3a4b;border-radius:9px;padding:10px 12px 10px 35px;color:var(--text);outline:none}
+.search input:focus,select:focus{border-color:var(--accent)}
+.search span{position:absolute;left:12px;top:8px;color:var(--muted);font-size:16px}
+select,.ghost{background:#0c131c;border:1px solid #2c3a4b;border-radius:9px;color:#dce6f2;padding:10px 12px;outline:none}
+.ghost{cursor:pointer}
+.ghost:hover{border-color:var(--accent)}
+.table-meta{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#101823;border-left:1px solid var(--line);border-right:1px solid var(--line);color:var(--muted);font-size:12px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-top:0;border-radius:0 0 14px 14px;background:#101720}
+table{border-collapse:collapse;width:100%;min-width:790px;font-variant-numeric:tabular-nums}
+thead th{background:#151f2c;color:#8799ae;font-size:10px;letter-spacing:.11em;text-transform:uppercase;font-weight:800;text-align:center;padding:14px 10px;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap}
+thead th:first-child,thead th:nth-child(2){text-align:left}
+thead th:first-child{width:58px}
+thead th:nth-child(2){min-width:235px}
+thead th:hover{color:var(--accent)}
+tbody tr{border-bottom:1px solid #202c3a;transition:background .15s}
+tbody tr:hover{background:#192534}
+tbody tr:last-child{border-bottom:0}
+td{padding:12px 10px;text-align:center;white-space:nowrap;color:#c5d1df}
+td:first-child{text-align:center;color:#8799ae;font-weight:750;width:58px}
+td:nth-child(2){text-align:left}
+.club{display:flex;align-items:center;gap:11px;font-weight:750;color:#eef4fc}
+.flag{font-size:19px;width:24px;text-align:center;flex-shrink:0}
+.club-name{overflow:hidden;text-overflow:ellipsis}
+.points{font-weight:900;color:#fff;font-size:15px}
+.positive{color:#9be875}.negative{color:#ff9c9c}.neutral{color:#9eafc2}
+.position{display:inline-grid;place-items:center;min-width:26px;height:26px;border-radius:7px}
+
+/* Promotion / play-off zones */
+.champions td:first-child .position{background:#183c31;color:#a7f0ca}
+.europa td:first-child .position{background:#18304b;color:#9bcbff}
+.conference td:first-child .position{background:#4b3a18;color:#ffd98a}
+
+/* Central European Cup qualification (ranks 1–6) */
+.cup-qual td:nth-child(2){border-left:3px solid var(--cup)}
+.cup-icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:16px;height:16px;margin-left:6px;border-radius:4px;
+  background:#3a2f11;color:#ffd97a;font-size:10px;line-height:1;
+  vertical-align:middle;flex-shrink:0;
+  box-shadow:0 0 0 1px #6d5614 inset;
+}
+
+.form{display:flex;justify-content:center;gap:3px}
+.form span{display:grid;place-items:center;width:19px;height:19px;border-radius:5px;font-size:10px;font-weight:900}
+.form .w{background:#214b3c;color:#a8f0c6}.form .d{background:#343e4b;color:#d5deea}.form .l{background:#4b2930;color:#ffb5bc}
+.legend{display:flex;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:11px;margin:16px 2px 0}
+.legend span{display:flex;align-items:center;gap:7px}
+.dot{width:8px;height:8px;border-radius:2px;display:inline-block}
+.note{margin-top:28px;padding:18px 20px;border:1px solid var(--line);border-radius:14px;background:var(--panel);display:flex;justify-content:space-between;align-items:center;gap:18px}
+.note strong{display:block;margin-bottom:3px}.note p{margin:0;color:var(--muted);font-size:12px}
+.note .mark{font-size:12px;color:var(--accent);font-weight:850;letter-spacing:.1em;white-space:nowrap;text-align:right}
+footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-size:11px;margin-top:24px;flex-wrap:wrap}
+.empty{padding:36px;text-align:center;color:var(--muted)}
+@media(max-width:700px){
+ .topbar{height:60px}.toplabel{display:none}.hero{align-items:flex-start;flex-direction:column;gap:14px}.season{padding:9px 12px}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.stat{padding:13px}.stat .value{font-size:22px}
+ .toolbar{align-items:stretch}.tools-left,.tools-right{width:100%}.search{flex:1}.search input{width:100%}.tools-right select{flex:1;min-width:0}
+ .note{align-items:flex-start;flex-direction:column}.note .mark{text-align:left}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="logo">CEL2</div><div>CENTRAL EUROPEAN LEAGUE 2<small>SECOND DIVISION · THE ROAD TO CEL</small></div></div>
+  <div class="toplabel">League centre&nbsp; / &nbsp;Standings</div>
+</header>
+<main class="wrap">
+  <section class="hero">
+    <div><div class="eyebrow">Official league table</div><h1>League Standings</h1><p class="subtitle">The race for promotion starts here. Every point counts across Central Europe.</p></div>
+    <div class="season" id="seasonLabel">◷ &nbsp;Pre-season · Matchday 0</div>
+  </section>
+  <section class="stats" aria-label="League highlights">
+    <div class="stat"><div class="label">League leader</div><div class="value" id="leader">—</div><div class="detail" id="leaderDetail">—</div></div>
+    <div class="stat"><div class="label">Most goals scored</div><div class="value" id="mostGoals">—</div><div class="detail" id="goalsDetail">—</div></div>
+    <div class="stat"><div class="label">Best goal difference</div><div class="value" id="bestGD">—</div><div class="detail" id="gdDetail">—</div></div>
+    <div class="stat"><div class="label">Teams competing</div><div class="value" id="teamCount">—</div><div class="detail">One table. One promotion dream.</div></div>
+  </section>
+  <section aria-label="Standings table">
+    <div class="toolbar">
+      <div class="tools-left">
+        <label class="search"><span>⌕</span><input id="search" type="search" placeholder="Search club or country…" aria-label="Search clubs"></label>
+      </div>
+      <div class="tools-right">
+        <select id="country" aria-label="Filter by country"><option value="">All countries</option></select>
+        <select id="view" aria-label="Filter table">
+          <option value="all">All positions</option>
+          <option value="cup">Cup places (1–6)</option>
+          <option value="promotion">Promotion places (1–2)</option>
+          <option value="playoff">Play-off places (3–6)</option>
+          <option value="bottom3">Bottom 3</option>
+        </select>
+        <button class="ghost" id="reset">Reset</button>
+      </div>
+    </div>
+    <div class="table-meta"><span id="showing">Showing all clubs</span><span>Click a column heading to sort ↕</span></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th data-key="rank" title="Sort by position">#</th><th data-key="name">Club</th><th data-key="p">P</th><th data-key="w">W</th><th data-key="d">D</th><th data-key="l">L</th><th data-key="gf">GF</th><th data-key="ga">GA</th><th data-key="gd">GD</th><th data-key="pts">PTS</th>
+        </tr></thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <div id="empty" class="empty" hidden>No clubs match your search.</div>
+    </div>
+    <div class="legend">
+      <span><i class="dot" style="background:#367e60"></i>1st — Promotion to CEL</span>
+      <span><i class="dot" style="background:#477fb7"></i>2nd — Promotion to CEL</span>
+      <span><i class="dot" style="background:#b58b2f"></i>3rd–6th — Promotion play-off</span>
+      <span><i class="dot" style="background:#c9a227"></i>1st–6th — Central European Cup qualification 🏆</span>
+    </div>
+  </section>
+  <section class="note">
+    <div><strong>CEL2 Match Centre</strong><p>Points, goal difference, matches played and rank are calculated automatically. The table always ranks by points, then goal difference, then goals scored.</p></div>
+    <div class="mark">TOP 2 PROMOTED · 3RD–6TH PLAY-OFF<br>TOP 6 QUALIFY FOR THE CENTRAL EUROPEAN CUP · NO RELEGATION</div>
+  </section>
+  <footer><span>© Central European League 2 · CEL2</span><span>Standings are subject to change after each matchday.</span></footer>
+</main>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   ▼▼▼  EDIT TEAM DATA HERE  ▼▼▼
+   ──────────────────────────────────────────────────────────────
+   All CEL2 clubs start the season at zero. Update w / d / l / gf / ga
+   after each matchday.
+
+     w  = wins          gf = goals scored
+     d  = draws         ga = goals conceded
+     l  = losses
+
+   Everything else is calculated automatically:
+     P   = w + d + l
+     GD  = gf - ga
+     PTS = (w × 3) + (d × 1)
+     Rank = sorted by PTS ↓, then GD ↓, then GF ↓, then name A–Z
+
+   Promotion & cup structure:
+     1st–2nd  = Automatic promotion to Central European League (CEL)
+     3rd–6th  = Promotion play-off
+     1st–6th  = Central European Cup qualification 🏆
+     No relegation from CEL2.
+
+   To add a team, copy any line below and change the values:
+   { flag:"🇸🇮", country:"Slovenia", name:"New Club", w:0, d:0, l:0, gf:0, ga:0 },
+   ══════════════════════════════════════════════════════════════ */
+const clubs = [
+  /* 🇦🇹 Austria — 3 clubs */
+  { flag:"🇦🇹", country:"Austria",       name:"FC Salzburg Adler",    w:0, d:0, l:0, gf:0, ga:0 },
+  { flag:"🇦🇹", country:"Austria",       name:"Linzer Stahl",         w:0, d:0, l:0, gf:0, ga:0 },
+  { flag:"🇦🇹", country:"Austria",       name:"Innsbruck Bergkönig",  w:0, d:0, l:0, gf:0, ga:0 },
+
+  /* 🇨🇿 Czechia — 3 clubs */
+  { flag:"🇨🇿", country:"Czechia",       name:"FC Ostrava Baník",     w:0, d:0, l:0, gf:0, ga:0 },
+  { flag:"🇨🇿", country:"Czechia",       name:"Viktoria Plzeňice",    w:0, d:0, l:0, gf:0, ga:0 },
+  { flag:"🇨🇿", country:"Czechia",       name:"FK Bohemian Liberec",  w:0, d:0, l:0, gf:0, ga:0 },
+
+  /* 🇩🇪 Germany — 3 clubs */
+  { flag:"🇩🇪", country:"Germany",       name:"FC Leipzig Vorwärts",  w:0, d:0, l:0, gf:0, ga:0 },
+  { flag:"🇩🇪", country:"Germany",       name:"Borussia Westfalen",   w:0, d:0, l:0, gf:0, ga:0 },
+  { flag:"🇩🇪", country:"Germany",       name:"SC Freiburgwald",      w:0, d:0, l:0, gf:0, ga:0 },
+
+  /* 🇭🇺 Hungary — 3 clubs */
+  { flag:"🇭🇺", country:"Hungary",       name:"Ferencváros United",   w:0, d:0, l:0, gf:0, ga:0 },
+  { flag:"🇭🇺", country:"Hungary",       name:"FC Szeged Tisza",      w:0, d:0, l:0, gf:0, ga:0 },
+  { flag:"🇭🇺", country:"Hungary",       name:"Győr Vasbástya",       w:0, d:0, l:0, gf:0, ga:0 },
+
+  /* 🇱🇮 Liechtenstein — 1 club */
+  { flag:"🇱🇮", country:"Liechtenstein", name:"FC Schaanberg",        w:0, d:0, l:0, gf:0, ga:0 },
+
+  /* 🇵🇱 Poland — 3 clubs */
+  { flag:"🇵🇱", country:"Poland",        name:"KS Lodz Widzew",       w:0, d:0, l:0, gf:0, ga:0 },
+  { flag:"🇵🇱", country:"Poland",        name:"FC Silesia Bytom",     w:0, d:0, l:0, gf:0, ga:0 },
+  { flag:"🇵🇱", country:"Poland",        name:"Wisła Tarnów",         w:0, d:0, l:0, gf:0, ga:0 },
+
+  /* 🇸🇰 Slovakia — 3 clubs */
+  { flag:"🇸🇰", country:"Slovakia",      name:"FC Nitra Knights",     w:0, d:0, l:0, gf:0, ga:0 },
+  { flag:"🇸🇰", country:"Slovakia",      name:"Tatran Žilina",        w:0, d:0, l:0, gf:0, ga:0 },
+  { flag:"🇸🇰", country:"Slovakia",      name:"Dunajská Streda FC",   w:0, d:0, l:0, gf:0, ga:0 },
+
+  /* 🇸🇮 Slovenia — 3 clubs */
+  { flag:"🇸🇮", country:"Slovenia",      name:"NK Celje Imperium",    w:0, d:0, l:0, gf:0, ga:0 },
+  { flag:"🇸🇮", country:"Slovenia",      name:"FC Koper Adriatic",    w:0, d:0, l:0, gf:0, ga:0 },
+  { flag:"🇸🇮", country:"Slovenia",      name:"NK Mura Ravens",       w:0, d:0, l:0, gf:0, ga:0 },
+
+  /* 🇨🇭 Switzerland — 2 clubs */
+  { flag:"🇨🇭", country:"Switzerland",   name:"FC Baselberg",         w:0, d:0, l:0, gf:0, ga:0 },
+  { flag:"🇨🇭", country:"Switzerland",   name:"FC Lausanne Helvetic", w:0, d:0, l:0, gf:0, ga:0 }
+];
+/* ▲▲▲  END OF EDITABLE DATA  ▲▲▲ */
+
+const WIN_POINTS = 3;
+const DRAW_POINTS = 1;
+
+/* Zone boundaries */
+const AUTO_PROMOTION = 2;   // 1st–2nd straight to CEL
+const PLAYOFF_MAX    = 6;   // 3rd–6th promotion play-off
+const CUP_MAX        = 6;   // 1st–6th Central European Cup
+
+/* Build the table: calculate P, GD, PTS, then rank. */
+function buildTable(){
+  const rows = clubs.map(c=>{
+    const w = +c.w || 0, d = +c.d || 0, l = +c.l || 0;
+    const gf = +c.gf || 0, ga = +c.ga || 0;
+    return {
+      flag: c.flag, country: c.country, name: c.name,
+      w, d, l, gf, ga,
+      p: w + d + l,
+      gd: gf - ga,
+      pts: w * WIN_POINTS + d * DRAW_POINTS
+    };
+  });
+
+  // Points ↓, goal difference ↓, goals scored ↓, name A–Z
+  rows.sort((a,b)=>
+    b.pts - a.pts ||
+    b.gd  - a.gd  ||
+    b.gf  - a.gf  ||
+    a.name.localeCompare(b.name)
+  );
+  rows.forEach((r,i)=> r.rank = i + 1);
+  return rows;
+}
+
+let table = buildTable();
+
+const country = document.getElementById('country');
+const search  = document.getElementById('search');
+const view    = document.getElementById('view');
+
+let sortKey = 'rank', sortDir = 1;
+
+/* ---------- Header stat cards ---------- */
+function renderStats(){
+  if(!table.length) return;
+  const leader  = table[0];
+  const goals   = table.reduce((a,b)=> b.gf > a.gf ? b : a, table[0]);
+  const bestGD  = table.reduce((a,b)=> b.gd > a.gd ? b : a, table[0]);
+  const sign    = n => (n > 0 ? '+' : '') + n;
+
+  document.getElementById('leader').textContent       = leader.name;
+  document.getElementById('leaderDetail').textContent = `${leader.pts} points · ${leader.p} played`;
+  document.getElementById('mostGoals').textContent    = goals.name;
+  document.getElementById('goalsDetail').textContent  = `${goals.gf} goals scored`;
+  document.getElementById('bestGD').textContent       = bestGD.name;
+  document.getElementById('gdDetail').textContent     = `${sign(bestGD.gd)} goal difference`;
+  document.getElementById('teamCount').textContent    = table.length;
+
+  const maxP = Math.max(...table.map(c=>c.p));
+  document.getElementById('seasonLabel').innerHTML =
+    maxP === 0
+      ? `◷ &nbsp;Pre-season · Matchday 0`
+      : `◷ &nbsp;Current table · Matchday ${maxP}`;
+}
+
+/* ---------- Country filter options ---------- */
+function renderCountryOptions(){
+  const current = country.value;
+  country.innerHTML = '<option value="">All countries</option>';
+  [...new Set(table.map(c=>c.country))].sort().forEach(c=>{
+    const o = document.createElement('option');
+    o.value = c; o.textContent = c;
+    country.appendChild(o);
+  });
+  country.value = current;
+}
+
+/* ---------- Zone class for a given rank ---------- */
+function zoneFor(rank){
+  if(rank <= 1) return 'champions';           // 1st  — auto promotion
+  if(rank <= AUTO_PROMOTION) return 'europa'; // 2nd  — auto promotion
+  if(rank <= PLAYOFF_MAX) return 'conference';// 3rd–6th — play-off
+  return '';
+}
+
+/* ---------- Table body ---------- */
+function render(){
+  const q = search.value.trim().toLowerCase();
+
+  let rows = table.filter(c =>
+    (!country.value || c.country === country.value) &&
+    (`${c.name} ${c.country}`.toLowerCase().includes(q))
+  );
+
+  if(view.value === 'cup') {
+    rows = rows.filter(c => c.rank <= CUP_MAX);
+  }
+  if(view.value === 'promotion') {
+    rows = rows.filter(c => c.rank <= AUTO_PROMOTION);
+  }
+  if(view.value === 'playoff') {
+    rows = rows.filter(c => c.rank > AUTO_PROMOTION && c.rank <= PLAYOFF_MAX);
+  }
+  if(view.value === 'bottom3') {
+    rows = rows.filter(c => c.rank > table.length - 3);
+  }
+
+  rows.sort((a,b)=>{
+    const x = a[sortKey], y = b[sortKey];
+    if(typeof x === 'string') return x.localeCompare(y) * sortDir;
+    return (x - y) * sortDir;
+  });
+
+  document.getElementById('tableBody').innerHTML = rows.map(c=>{
+    const zone = zoneFor(c.rank);
+    const cupQual = c.rank <= CUP_MAX;
+    const cupIcon = cupQual
+      ? `<span class="cup-icon" title="Central European Cup qualification">🏆</span>`
+      : '';
+
+    const gdClass = c.gd > 0 ? 'positive' : c.gd < 0 ? 'negative' : 'neutral';
+    const gdText  = (c.gd > 0 ? '+' : '') + c.gd;
+
+    return `<tr class="${zone} ${cupQual ? 'cup-qual' : ''}">
+      <td><span class="position">${c.rank}</span></td>
+      <td><div class="club"><span class="flag">${c.flag}</span><span class="club-name">${c.name}</span>${cupIcon}</div></td>
+      <td>${c.p}</td><td>${c.w}</td><td>${c.d}</td><td>${c.l}</td>
+      <td>${c.gf}</td><td>${c.ga}</td>
+      <td class="${gdClass}">${gdText}</td>
+      <td class="points">${c.pts}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('empty').hidden = rows.length !== 0;
+  document.getElementById('showing').textContent =
+    `Showing ${rows.length} of ${table.length} clubs`;
+}
+
+/* ---------- Sorting ---------- */
+document.querySelectorAll('thead th').forEach(th=>{
+  th.addEventListener('click', ()=>{
+    const key = th.dataset.key;
+    if(!key) return;
+    if(sortKey === key) sortDir *= -1;
+    else { sortKey = key; sortDir = key === 'name' ? 1 : -1; }
+    render();
+  });
+});
+
+/* ---------- Controls ---------- */
+search.addEventListener('input', render);
+country.addEventListener('change', render);
+view.addEventListener('change', render);
+document.getElementById('reset').addEventListener('click', ()=>{
+  search.value = ''; country.value = ''; view.value = 'all';
+  sortKey = 'rank'; sortDir = 1;
+  render();
+});
+
+/* ---------- Boot ---------- */
+renderStats();
+renderCountryOptions();
+render();
+</script>
+</body>
+</html>
