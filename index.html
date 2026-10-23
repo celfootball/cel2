@@ -19,6 +19,45 @@ a{color:inherit}
 .logo{width:38px;height:38px;border-radius:11px;background:var(--accent);color:#111a12;display:grid;place-items:center;font-weight:950;font-size:12px;box-shadow:0 0 24px #b9f36b25}
 .brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.19em;font-weight:700;margin-top:1px}
 .toplabel{color:var(--muted);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+
+/* League switcher tabs */
+.subnav{
+  background:#0a1018d9;
+  border-bottom:1px solid var(--line);
+  padding:0 clamp(16px,4vw,56px);
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
+}
+.subnav a{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:14px 20px 13px;
+  color:var(--muted);
+  text-decoration:none;
+  font-weight:800;
+  font-size:12px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  border-bottom:2px solid transparent;
+  transition:color .15s,border-color .15s;
+  white-space:nowrap;
+}
+.subnav a:hover{color:#dce6f2}
+.subnav a.active{color:var(--accent);border-bottom-color:var(--accent)}
+.subnav a .pill{
+  display:inline-block;
+  font-size:10px;
+  padding:2px 7px;
+  border-radius:6px;
+  background:#1d2a3a;
+  color:#9bc0f0;
+  font-weight:800;
+  letter-spacing:.06em;
+}
+.subnav a.active .pill{background:#22350f;color:#c9f590}
+
 .wrap{max-width:1400px;margin:auto;padding:30px clamp(14px,3vw,40px) 52px}
 .hero{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:24px}
 .eyebrow{color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.19em;text-transform:uppercase;margin-bottom:8px}
@@ -91,6 +130,7 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.stat{padding:13px}.stat .value{font-size:22px}
  .toolbar{align-items:stretch}.tools-left,.tools-right{width:100%}.search{flex:1}.search input{width:100%}.tools-right select{flex:1;min-width:0}
  .note{align-items:flex-start;flex-direction:column}.note .mark{text-align:left}
+ .subnav a{padding:12px 14px;font-size:11px}
 }
 </style>
 </head>
@@ -99,6 +139,12 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
   <div class="brand"><div class="logo">CEL2</div><div>CENTRAL EUROPEAN LEAGUE 2<small>SECOND DIVISION · THE ROAD TO CEL</small></div></div>
   <div class="toplabel">League centre&nbsp; / &nbsp;Standings</div>
 </header>
+
+<nav class="subnav" aria-label="League switcher">
+  <a href="https://celfootball.github.io/cel/">Central European League <span class="pill">Tier 1</span></a>
+  <a href="#" class="active" aria-current="page">CEL2 <span class="pill">Tier 2</span></a>
+</nav>
+
 <main class="wrap">
   <section class="hero">
     <div><div class="eyebrow">Official league table</div><h1>League Standings</h1><p class="subtitle">The race for promotion starts here. Every point counts across Central Europe.</p></div>
