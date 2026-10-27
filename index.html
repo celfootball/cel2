@@ -201,50 +201,33 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
 /* ══════════════════════════════════════════════════════════════
    ▼▼▼  EDIT TEAM DATA HERE  ▼▼▼
    ──────────────────────────────────────────────────────────────
-   Updated with Matchday 1 results.
+   Updated with Matchday 2 standings.
    ══════════════════════════════════════════════════════════════ */
 const clubs = [
-  /* 🇦🇹 Austria — 3 clubs */
-  { flag:"🇦🇹", country:"Austria",       name:"FC Salzburg Adler",    w:1, d:0, l:0, gf:2, ga:0 },
-  { flag:"🇦🇹", country:"Austria",       name:"Linzer Stahl",         w:0, d:1, l:0, gf:2, ga:2 },
-  { flag:"🇦🇹", country:"Austria",       name:"Innsbruck Bergkönig",  w:0, d:0, l:1, gf:0, ga:2 },
-
-  /* 🇨🇿 Czechia — 3 clubs */
-  { flag:"🇨🇿", country:"Czechia",       name:"FC Ostrava Baník",     w:0, d:1, l:0, gf:1, ga:1 },
-  { flag:"🇨🇿", country:"Czechia",       name:"Viktoria Plzeňice",    w:0, d:0, l:1, gf:2, ga:3 },
-  { flag:"🇨🇿", country:"Czechia",       name:"FK Bohemian Liberec",  w:0, d:0, l:1, gf:0, ga:1 },
-
-  /* 🇩🇪 Germany — 3 clubs */
-  { flag:"🇩🇪", country:"Germany",       name:"FC Leipzig Vorwärts",  w:1, d:0, l:0, gf:4, ga:0 },
-  { flag:"🇩🇪", country:"Germany",       name:"Borussia Westfalen",   w:0, d:1, l:0, gf:1, ga:1 },
-  { flag:"🇩🇪", country:"Germany",       name:"SC Freiburgwald",      w:1, d:0, l:0, gf:2, ga:0 },
-
-  /* 🇭🇺 Hungary — 3 clubs */
-  { flag:"🇭🇺", country:"Hungary",       name:"Ferencváros United",   w:0, d:1, l:0, gf:1, ga:1 },
-  { flag:"🇭🇺", country:"Hungary",       name:"FC Szeged Tisza",      w:0, d:1, l:0, gf:1, ga:1 },
-  { flag:"🇭🇺", country:"Hungary",       name:"Győr Vasbástya",       w:0, d:0, l:1, gf:1, ga:2 },
-
-  /* 🇱🇮 Liechtenstein — 1 club */
-  { flag:"🇱🇮", country:"Liechtenstein", name:"FC Schaanberg",        w:1, d:0, l:0, gf:2, ga:1 },
-
-  /* 🇵🇱 Poland — 3 clubs */
-  { flag:"🇵🇱", country:"Poland",        name:"KS Lodz Widzew",       w:0, d:1, l:0, gf:1, ga:1 },
-  { flag:"🇵🇱", country:"Poland",        name:"FC Silesia Bytom",     w:1, d:0, l:0, gf:1, ga:0 },
-  { flag:"🇵🇱", country:"Poland",        name:"Wisła Tarnów",         w:0, d:1, l:0, gf:1, ga:1 },
-
-  /* 🇸🇰 Slovakia — 3 clubs */
-  { flag:"🇸🇰", country:"Slovakia",      name:"FC Nitra Knights",     w:0, d:1, l:0, gf:2, ga:2 },
-  { flag:"🇸🇰", country:"Slovakia",      name:"Tatran Žilina",        w:0, d:0, l:1, gf:0, ga:2 },
-  { flag:"🇸🇰", country:"Slovakia",      name:"Dunajská Streda FC",   w:1, d:0, l:0, gf:3, ga:2 },
-
-  /* 🇸🇮 Slovenia — 3 clubs */
-  { flag:"🇸🇮", country:"Slovenia",      name:"NK Celje Imperium",    w:0, d:0, l:1, gf:0, ga:4 },
-  { flag:"🇸🇮", country:"Slovenia",      name:"FC Koper Adriatic",    w:0, d:0, l:1, gf:0, ga:2 },
-  { flag:"🇸🇮", country:"Slovenia",      name:"NK Mura Ravens",       w:0, d:1, l:0, gf:1, ga:1 },
-
-  /* 🇨🇭 Switzerland — 2 clubs */
-  { flag:"🇨🇭", country:"Switzerland",   name:"FC Baselberg",         w:1, d:0, l:0, gf:2, ga:0 },
-  { flag:"🇨🇭", country:"Switzerland",   name:"FC Lausanne Helvetic", w:0, d:1, l:0, gf:1, ga:1 }
+  { flag:"🇱🇮", country:"Liechtenstein", name:"FC Schaanberg", w:2, d:0, l:0, gf:5, ga:1 },
+  { flag:"🇩🇪", country:"Germany", name:"SC Freiburgwald", w:2, d:0, l:0, gf:4, ga:0 },
+  { flag:"🇦🇹", country:"Austria", name:"FC Salzburg Adler", w:2, d:0, l:0, gf:5, ga:2 },
+  { flag:"🇩🇪", country:"Germany", name:"FC Leipzig Vorwärts", w:1, d:1, l:0, gf:7, ga:3 },
+  { flag:"🇨🇿", country:"Czechia", name:"FC Ostrava Baník", w:1, d:1, l:0, gf:5, ga:3 },
+  { flag:"🇭🇺", country:"Hungary", name:"FC Szeged Tisza", w:1, d:1, l:0, gf:5, ga:4 },
+  { flag:"🇸🇰", country:"Slovakia", name:"FC Nitra Knights", w:1, d:1, l:0, gf:4, ga:3 },
+  { flag:"🇸🇮", country:"Slovenia", name:"NK Mura Ravens", w:1, d:1, l:0, gf:4, ga:3 },
+  { flag:"🇨🇭", country:"Switzerland", name:"FC Baselberg", w:1, d:0, l:1, gf:4, ga:3 },
+  { flag:"🇵🇱", country:"Poland", name:"FC Silesia Bytom", w:1, d:0, l:1, gf:4, ga:4 },
+  { flag:"🇸🇰", country:"Slovakia", name:"Dunajská Streda FC", w:1, d:0, l:1, gf:3, ga:4 },
+  { flag:"🇵🇱", country:"Poland", name:"KS Lodz Widzew", w:0, d:2, l:0, gf:4, ga:4 },
+  { flag:"🇩🇪", country:"Germany", name:"Borussia Westfalen", w:0, d:2, l:0, gf:2, ga:2 },
+  { flag:"🇦🇹", country:"Austria", name:"Linzer Stahl", w:0, d:2, l:0, gf:2, ga:2 },
+  { flag:"🇵🇱", country:"Poland", name:"Wisła Tarnów", w:0, d:2, l:0, gf:2, ga:2 },
+  { flag:"🇨🇭", country:"Switzerland", name:"FC Lausanne Helvetic", w:0, d:2, l:0, gf:1, ga:1 },
+  { flag:"🇨🇿", country:"Czechia", name:"Viktoria Plzeňice", w:0, d:1, l:1, gf:3, ga:4 },
+  { flag:"🇸🇮", country:"Slovenia", name:"FC Koper Adriatic", w:0, d:1, l:1, gf:1, ga:3 },
+  { flag:"🇸🇰", country:"Slovakia", name:"Tatran Žilina", w:0, d:1, l:1, gf:1, ga:3 },
+  { flag:"🇭🇺", country:"Hungary", name:"Ferencváros United", w:0, d:1, l:1, gf:1, ga:4 },
+  { flag:"🇸🇮", country:"Slovenia", name:"NK Celje Imperium", w:0, d:1, l:1, gf:1, ga:5 },
+  { flag:"🇨🇿", country:"Czechia", name:"FK Bohemian Liberec", w:0, d:0, l:2, gf:2, ga:4 },
+  { flag:"🇭🇺", country:"Hungary", name:"Győr Vasbástya", w:0, d:0, l:2, gf:3, ga:6 },
+  { flag:"🇦🇹", country:"Austria", name:"Innsbruck Bergkönig", w:0, d:0, l:2, gf:1, ga:4 }
 ];
 /* ▲▲▲  END OF EDITABLE DATA  ▲▲▲ */
 
