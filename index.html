@@ -231,7 +231,7 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
   <section id="standingsView" class="view-section" style="display:none;">
     <section class="hero">
       <div><div class="eyebrow">Official league table</div><h1>League Standings</h1><p class="subtitle">The race for promotion starts here. Every point counts across Central Europe.</p></div>
-      <div class="season" id="seasonLabel">◷ &nbsp;Pre-season · Matchday 0</div>
+      <div class="season" id="seasonLabel">◷ &nbsp;Current table · Matchday 2</div>
     </section>
     
     <section class="stats" aria-label="League highlights">
@@ -348,6 +348,34 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
     </div>
 </div>
 
+<!-- RAW PAST RESULTS DATA (Matchdays 1 & 2) -->
+<script type="text/plain" id="pastResultsData">
+🇩🇪 Borussia Westfalen 1–1 🇵🇱 Wisła Tarnów
+🇸🇰 Dunajská Streda FC 3–2 🇨🇿 Viktoria Plzeňice
+🇸🇰 Tatran Žilina 0–2 🇨🇭 FC Baselberg
+🇸🇮 FC Koper Adriatic 0–2 🇩🇪 SC Freiburgwald
+🇸🇮 NK Mura Ravens 1–1 🇨🇭 FC Lausanne Helvetic
+🇩🇪 FC Leipzig Vorwärts 4–0 🇸🇮 NK Celje Imperium
+🇦🇹 Linzer Stahl 2–2 🇸🇰 FC Nitra Knights
+🇨🇿 FC Ostrava Baník 1–1 🇵🇱 KS Lodz Widzew
+🇦🇹 Innsbruck Bergkönig 0–2 🇦🇹 FC Salzburg Adler
+🇱🇮 FC Schaanberg 2–1 🇭🇺 Győr Vasbástya
+🇨🇿 FK Bohemian Liberec 0–1 🇵🇱 FC Silesia Bytom
+🇭🇺 FC Szeged Tisza 1–1 🇭🇺 Ferencváros United
+🇨🇿 Viktoria Plzeňice 1–1 🇩🇪 Borussia Westfalen
+🇵🇱 Wisła Tarnów 1–1 🇸🇰 Tatran Žilina
+🇩🇪 SC Freiburgwald 2–0 🇸🇰 Dunajská Streda FC
+🇨🇭 FC Baselberg 2–3 🇸🇮 NK Mura Ravens
+🇸🇮 NK Celje Imperium 1–1 🇸🇮 FC Koper Adriatic
+🇨🇭 FC Lausanne Helvetic 0–0 🇦🇹 Linzer Stahl
+🇵🇱 KS Lodz Widzew 3–3 🇩🇪 FC Leipzig Vorwärts
+🇸🇰 FC Nitra Knights 2–1 🇦🇹 Innsbruck Bergkönig
+🇭🇺 Győr Vasbástya 2–4 🇨🇿 FC Ostrava Baník
+🇦🇹 FC Salzburg Adler 3–2 🇨🇿 FK Bohemian Liberec
+🇭🇺 Ferencváros United 0–3 🇱🇮 FC Schaanberg
+🇵🇱 FC Silesia Bytom 3–4 🇭🇺 FC Szeged Tisza
+</script>
+
 <script>
 /* ══════════════════════════════════════════════════════════════
    SEEDED RANDOM NUMBER GENERATOR
@@ -374,11 +402,6 @@ function hashString(str) {
 const FIRST_NAMES = ["J.", "M.", "T.", "L.", "P.", "A.", "D.", "R.", "K.", "S.", "F.", "B.", "C.", "E.", "G.", "H.", "I.", "O.", "V.", "N.", "U.", "Z.", "Y.", "X."];
 const LAST_NAMES = ["Novák", "Kowalski", "Horváth", "Schmid", "Nowak", "Kovács", "Fischer", "Weber", "Mägi", "Varga", "Popescu", "Müller", "Jensen", "Lindqvist", "Bakker", "Šimić", "Petrov", "Virtanen", "Dvořák", "Horvat", "Lehner", "Kováč", "Kranjc", "Mlakar", "Novak", "Zupan", "Kralj", "Pavlin", "Kozel", "Babič", "Jurić", "Matić", "Babić", "Tomić", "Kovačić", "Božić", "Blažević", "Grgić", "Pavlović", "Radić"];
 
-function getRandomPlayerName() {
-    const rng = Math.random;
-    return `${FIRST_NAMES[Math.floor(rng() * FIRST_NAMES.length)]} ${LAST_NAMES[Math.floor(rng() * LAST_NAMES.length)]}`;
-}
-
 function poissonRandom(lambda) {
     const L = Math.exp(-lambda);
     let k = 0, p = 1;
@@ -390,68 +413,119 @@ function poissonRandom(lambda) {
    CEL2 TEAM DATA & SCHEDULE GENERATOR
    ══════════════════════════════════════════════════════════════ */
 const CEL2_TEAMS = [
-    { flag:"🇦🇹", country:"Austria", name:"FC Salzburg Adler" },
-    { flag:"🇦🇹", country:"Austria", name:"Linzer Stahl" },
-    { flag:"🇦🇹", country:"Austria", name:"Innsbruck Bergkönig" },
-    { flag:"🇨🇿", country:"Czechia", name:"FC Ostrava Baník" },
-    { flag:"🇨🇿", country:"Czechia", name:"Viktoria Plzeňice" },
-    { flag:"🇨🇿", country:"Czechia", name:"FK Bohemian Liberec" },
-    { flag:"🇩🇪", country:"Germany", name:"FC Leipzig Vorwärts" },
-    { flag:"🇩🇪", country:"Germany", name:"Borussia Westfalen" },
-    { flag:"🇩🇪", country:"Germany", name:"SC Freiburgwald" },
-    { flag:"🇭🇺", country:"Hungary", name:"Ferencváros United" },
-    { flag:"🇭🇺", country:"Hungary", name:"FC Szeged Tisza" },
-    { flag:"🇭🇺", country:"Hungary", name:"Győr Vasbástya" },
     { flag:"🇱🇮", country:"Liechtenstein", name:"FC Schaanberg" },
-    { flag:"🇵🇱", country:"Poland", name:"KS Lodz Widzew" },
-    { flag:"🇵🇱", country:"Poland", name:"FC Silesia Bytom" },
-    { flag:"🇵🇱", country:"Poland", name:"Wisła Tarnów" },
+    { flag:"🇩🇪", country:"Germany", name:"SC Freiburgwald" },
+    { flag:"🇦🇹", country:"Austria", name:"FC Salzburg Adler" },
+    { flag:"🇩🇪", country:"Germany", name:"FC Leipzig Vorwärts" },
+    { flag:"🇨🇿", country:"Czechia", name:"FC Ostrava Baník" },
+    { flag:"🇭🇺", country:"Hungary", name:"FC Szeged Tisza" },
     { flag:"🇸🇰", country:"Slovakia", name:"FC Nitra Knights" },
-    { flag:"🇸🇰", country:"Slovakia", name:"Tatran Žilina" },
-    { flag:"🇸🇰", country:"Slovakia", name:"Dunajská Streda FC" },
-    { flag:"🇸🇮", country:"Slovenia", name:"NK Celje Imperium" },
-    { flag:"🇸🇮", country:"Slovenia", name:"FC Koper Adriatic" },
     { flag:"🇸🇮", country:"Slovenia", name:"NK Mura Ravens" },
     { flag:"🇨🇭", country:"Switzerland", name:"FC Baselberg" },
-    { flag:"🇨🇭", country:"Switzerland", name:"FC Lausanne Helvetic" }
+    { flag:"🇵🇱", country:"Poland", name:"FC Silesia Bytom" },
+    { flag:"🇸🇰", country:"Slovakia", name:"Dunajská Streda FC" },
+    { flag:"🇵🇱", country:"Poland", name:"KS Lodz Widzew" },
+    { flag:"🇩🇪", country:"Germany", name:"Borussia Westfalen" },
+    { flag:"🇦🇹", country:"Austria", name:"Linzer Stahl" },
+    { flag:"🇵🇱", country:"Poland", name:"Wisła Tarnów" },
+    { flag:"🇨🇭", country:"Switzerland", name:"FC Lausanne Helvetic" },
+    { flag:"🇨🇿", country:"Czechia", name:"Viktoria Plzeňice" },
+    { flag:"🇸🇮", country:"Slovenia", name:"FC Koper Adriatic" },
+    { flag:"🇸🇰", country:"Slovakia", name:"Tatran Žilina" },
+    { flag:"🇭🇺", country:"Hungary", name:"Ferencváros United" },
+    { flag:"🇸🇮", country:"Slovenia", name:"NK Celje Imperium" },
+    { flag:"🇨🇿", country:"Czechia", name:"FK Bohemian Liberec" },
+    { flag:"🇭🇺", country:"Hungary", name:"Győr Vasbástya" },
+    { flag:"🇦🇹", country:"Austria", name:"Innsbruck Bergkönig" }
 ];
 
-const BASE_CLUBS = CEL2_TEAMS.map(t => ({
-    flag: t.flag,
-    country: t.country,
-    name: t.name,
-    w: 0, d: 0, l: 0, gf: 0, ga: 0
-}));
+const BASE_CLUBS = [
+  { flag:"🇱🇮", country:"Liechtenstein", name:"FC Schaanberg", w:2, d:0, l:0, gf:5, ga:1 },
+  { flag:"🇩🇪", country:"Germany", name:"SC Freiburgwald", w:2, d:0, l:0, gf:4, ga:0 },
+  { flag:"🇦🇹", country:"Austria", name:"FC Salzburg Adler", w:2, d:0, l:0, gf:5, ga:2 },
+  { flag:"🇩🇪", country:"Germany", name:"FC Leipzig Vorwärts", w:1, d:1, l:0, gf:7, ga:3 },
+  { flag:"🇨🇿", country:"Czechia", name:"FC Ostrava Baník", w:1, d:1, l:0, gf:5, ga:3 },
+  { flag:"🇭🇺", country:"Hungary", name:"FC Szeged Tisza", w:1, d:1, l:0, gf:5, ga:4 },
+  { flag:"🇸🇰", country:"Slovakia", name:"FC Nitra Knights", w:1, d:1, l:0, gf:4, ga:3 },
+  { flag:"🇸🇮", country:"Slovenia", name:"NK Mura Ravens", w:1, d:1, l:0, gf:4, ga:3 },
+  { flag:"🇨🇭", country:"Switzerland", name:"FC Baselberg", w:1, d:0, l:1, gf:4, ga:3 },
+  { flag:"🇵🇱", country:"Poland", name:"FC Silesia Bytom", w:1, d:0, l:1, gf:4, ga:4 },
+  { flag:"🇸🇰", country:"Slovakia", name:"Dunajská Streda FC", w:1, d:0, l:1, gf:3, ga:4 },
+  { flag:"🇵🇱", country:"Poland", name:"KS Lodz Widzew", w:0, d:2, l:0, gf:4, ga:4 },
+  { flag:"🇩🇪", country:"Germany", name:"Borussia Westfalen", w:0, d:2, l:0, gf:2, ga:2 },
+  { flag:"🇦🇹", country:"Austria", name:"Linzer Stahl", w:0, d:2, l:0, gf:2, ga:2 },
+  { flag:"🇵🇱", country:"Poland", name:"Wisła Tarnów", w:0, d:2, l:0, gf:2, ga:2 },
+  { flag:"🇨🇭", country:"Switzerland", name:"FC Lausanne Helvetic", w:0, d:2, l:0, gf:1, ga:1 },
+  { flag:"🇨🇿", country:"Czechia", name:"Viktoria Plzeňice", w:0, d:1, l:1, gf:3, ga:4 },
+  { flag:"🇸🇮", country:"Slovenia", name:"FC Koper Adriatic", w:0, d:1, l:1, gf:1, ga:3 },
+  { flag:"🇸🇰", country:"Slovakia", name:"Tatran Žilina", w:0, d:1, l:1, gf:1, ga:3 },
+  { flag:"🇭🇺", country:"Hungary", name:"Ferencváros United", w:0, d:1, l:1, gf:1, ga:4 },
+  { flag:"🇸🇮", country:"Slovenia", name:"NK Celje Imperium", w:0, d:1, l:1, gf:1, ga:5 },
+  { flag:"🇨🇿", country:"Czechia", name:"FK Bohemian Liberec", w:0, d:0, l:2, gf:2, ga:4 },
+  { flag:"🇭🇺", country:"Hungary", name:"Győr Vasbástya", w:0, d:0, l:2, gf:3, ga:6 },
+  { flag:"🇦🇹", country:"Austria", name:"Innsbruck Bergkönig", w:0, d:0, l:2, gf:1, ga:4 }
+];
 
-function generateCEL2Schedule() {
-    let teams = [...CEL2_TEAMS];
+const TEAM_NAMES = CEL2_TEAMS.map(t => t.name);
+
+function generateScheduleFromMatchday3() {
+    let teams = [...TEAM_NAMES];
     let n = teams.length; // 24
     let rounds = n - 1; // 23
     let matchesPerRound = n / 2; // 12
-    
     let schedule = [];
-    let startDate = new Date();
-    startDate.setHours(startDate.getHours() + 1); // Start in 1 hour
 
+    // Find next Saturday for Matchday 3
+    let startDate = new Date();
+    let daysUntilSat = (6 - startDate.getDay() + 7) % 7;
+    if (daysUntilSat === 0) daysUntilSat = 7; // If today is Saturday, start next Saturday
+    startDate.setDate(startDate.getDate() + daysUntilSat);
+    startDate.setHours(0,0,0,0);
+
+    // Generate all rounds
     for (let r = 0; r < rounds; r++) {
-        let matchday = r + 1;
+        let matchday = r + 3; // Start from Matchday 3
+        let roundMatches = [];
+        
         for (let i = 0; i < matchesPerRound; i++) {
             let home = teams[i];
             let away = teams[n - 1 - i];
             
+            // Alternate home/away for balance
             if (r % 2 !== 0) {
                 let temp = home; home = away; away = temp;
             }
+            roundMatches.push({ home, away });
+        }
 
+        // Assign dates and times: 6 Saturday, 6 Sunday
+        // Sat: 12:00 (0,1), 14:00 (2,3), 16:00 (4,5)
+        // Sun: 12:00 (6,7), 14:00 (8,9), 16:00 (10,11)
+        let times = [
+            { day: 6, hour: 12, min: 0 }, { day: 6, hour: 12, min: 0 },
+            { day: 6, hour: 14, min: 0 }, { day: 6, hour: 14, min: 0 },
+            { day: 6, hour: 16, min: 0 }, { day: 6, hour: 16, min: 0 },
+            { day: 0, hour: 12, min: 0 }, { day: 0, hour: 12, min: 0 },
+            { day: 0, hour: 14, min: 0 }, { day: 0, hour: 14, min: 0 },
+            { day: 0, hour: 16, min: 0 }, { day: 0, hour: 16, min: 0 }
+        ];
+
+        for (let i = 0; i < matchesPerRound; i++) {
             let matchDate = new Date(startDate);
-            matchDate.setDate(matchDate.getDate() + r); // 1 day between matchdays
-            matchDate.setMinutes(matchDate.getMinutes() + i * 10); // Stagger matches
+            // If Sunday match, add 1 day
+            if (times[i].day === 0) {
+                matchDate.setDate(matchDate.getDate() + 1);
+            }
+            matchDate.setHours(times[i].hour, times[i].min, 0, 0);
 
-            let matchId = `m_${matchday}_${home.name}_${away.name}`.replace(/\s/g, '');
+            let home = roundMatches[i].home;
+            let away = roundMatches[i].away;
+
+            let matchId = `m_${matchday}_${home}_${away}`.replace(/\s/g, '');
             let rng = mulberry32(hashString(matchId));
 
-            let homeStr = 0.8 + (hashString(home.name) % 50) / 100;
-            let awayStr = 0.7 + (hashString(away.name) % 50) / 100;
+            let homeStr = 0.8 + (hashString(home) % 50) / 100;
+            let awayStr = 0.7 + (hashString(away) % 50) / 100;
             let homeGoals = Math.min(poissonRandom(1.35 * homeStr * 1.15), 6);
             let awayGoals = Math.min(poissonRandom(1.35 * awayStr * 0.95), 6);
 
@@ -473,17 +547,17 @@ function generateCEL2Schedule() {
             const getRandomPlayer = () => `${pick(FIRST_NAMES)} ${pick(LAST_NAMES)}`;
 
             for (let j = 0; j < homeGoals; j++) {
-                events.push({ minute: Math.floor(rng() * maxMinute) + 1, type: "goal", team: "home", desc: `⚽ GOAL! ${getRandomPlayer()} scores for ${home.name}!` });
+                events.push({ minute: Math.floor(rng() * maxMinute) + 1, type: "goal", team: "home", desc: `⚽ GOAL! ${getRandomPlayer()} scores for ${home}!` });
             }
             for (let j = 0; j < awayGoals; j++) {
-                events.push({ minute: Math.floor(rng() * maxMinute) + 1, type: "goal", team: "away", desc: `⚽ GOAL! ${getRandomPlayer()} scores for ${away.name}!` });
+                events.push({ minute: Math.floor(rng() * maxMinute) + 1, type: "goal", team: "away", desc: `⚽ GOAL! ${getRandomPlayer()} scores for ${away}!` });
             }
 
             let actionTypes = ['foul', 'shot_wide', 'shot_save', 'corner', 'offside'];
             for (let j = 0; j < Math.floor(rng() * 10) + 15; j++) {
                 let team = rng() > 0.5 ? 'home' : 'away';
-                let teamName = team === 'home' ? home.name : away.name;
-                let oppName = team === 'home' ? away.name : home.name;
+                let teamName = team === 'home' ? home : away;
+                let oppName = team === 'home' ? away : home;
                 let action = actionTypes[Math.floor(rng() * actionTypes.length)];
                 let desc = '';
                 if (action === 'foul') desc = `Foul on ${getRandomPlayer()} (${teamName}). Freekick awarded to ${oppName}.`;
@@ -496,7 +570,7 @@ function generateCEL2Schedule() {
 
             for (let j = 0; j < Math.floor(rng() * 3) + 2; j++) {
                 let isHome = rng() > 0.5;
-                events.push({ minute: Math.floor(rng() * maxMinute) + 15, type: "yellow", team: isHome ? "home" : "away", desc: `🟨 Yellow card for ${getRandomPlayer()} (${isHome ? home.name : away.name}).` });
+                events.push({ minute: Math.floor(rng() * maxMinute) + 15, type: "yellow", team: isHome ? "home" : "away", desc: `🟨 Yellow card for ${getRandomPlayer()} (${isHome ? home : away}).` });
             }
 
             events.sort((a,b) => a.minute - b.minute);
@@ -504,8 +578,8 @@ function generateCEL2Schedule() {
             schedule.push({
                 id: matchId,
                 matchday: matchday,
-                homeTeam: home.name,
-                awayTeam: away.name,
+                homeTeam: home,
+                awayTeam: away,
                 startTime: matchDate.getTime(),
                 injuryTime1H,
                 injuryTime2H,
@@ -513,12 +587,32 @@ function generateCEL2Schedule() {
                 events
             });
         }
+        // Rotate teams for next round
         teams.splice(1, 0, teams.pop());
+        // Advance date by 7 days for next matchday
+        startDate.setDate(startDate.getDate() + 7);
     }
     return schedule;
 }
 
-const MATCH_SCHEDULE = generateCEL2Schedule();
+const MATCH_SCHEDULE = generateScheduleFromMatchday3();
+const PAST_RESULTS = [];
+
+// Parse Past Results
+const pastResultsText = document.getElementById('pastResultsData').textContent;
+pastResultsText.split('\n').forEach(line => {
+    line = line.trim();
+    if (!line) return;
+    const match = line.match(/^[\u{1F1E6}-\u{1F1FF}\s]*(.+?)\s*(\d+)\s*[–-]\s*(\d+)\s*[\u{1F1E6}-\u{1F1FF}\s]*(.+)$/u);
+    if (match) {
+        PAST_RESULTS.push({
+            home: match[1].trim(),
+            homeScore: parseInt(match[2]),
+            awayScore: parseInt(match[3]),
+            away: match[4].trim()
+        });
+    }
+});
 
 let activeMatchId = null;
 let activeTeamName = null;
@@ -571,7 +665,41 @@ function generateSquad(teamName, teamCountry) {
 }
 
 function calculateSquadStats(teamName, squad) {
-    // Process Finished Simulated Matches (all matches since it's a fresh season)
+    const pastTeamMatches = PAST_RESULTS.filter(m => m.home === teamName || m.away === teamName);
+    
+    pastTeamMatches.forEach((m, idx) => {
+        const isHome = m.home === teamName;
+        const goalsScored = isHome ? m.homeScore : m.awayScore;
+        
+        squad.forEach((p, i) => {
+            if (i < 11) p.apps++;
+            else {
+                const rng = mulberry32(hashString(teamName + "_app_" + idx + "_" + i));
+                if (rng() > 0.7) p.apps++;
+            }
+        });
+
+        for (let g = 0; g < goalsScored; g++) {
+            const rng = mulberry32(hashString(teamName + "_goal_" + idx + "_" + g));
+            let scorerIdx = 0;
+            let r = rng();
+            if (r < 0.5) scorerIdx = 8 + Math.floor(rng() * 3);
+            else if (r < 0.8) scorerIdx = 5 + Math.floor(rng() * 3);
+            else scorerIdx = Math.floor(rng() * 5);
+            
+            squad[scorerIdx].goals++;
+            
+            if (rng() > 0.3) {
+                let assistIdx = 0;
+                let ar = rng();
+                if (ar < 0.4) assistIdx = 5 + Math.floor(rng() * 3);
+                else if (ar < 0.7) assistIdx = 8 + Math.floor(rng() * 3);
+                else assistIdx = 1 + Math.floor(rng() * 4);
+                if (assistIdx !== scorerIdx) squad[assistIdx].assists++;
+            }
+        }
+    });
+
     const finishedMatches = MATCH_SCHEDULE.filter(m => m.phase === 'FT' && (m.homeTeam === teamName || m.awayTeam === teamName));
     
     finishedMatches.forEach((m, idx) => {
@@ -676,7 +804,7 @@ function tick() {
   if (activeMatchId) updateModalData();
 
   if (justFinishedAny) {
-      updateStats(); // Instantly update league table
+      updateStats(); 
       
       if (activeTeamName) {
           const squadTab = document.getElementById('tmSquadTab');
@@ -713,7 +841,7 @@ function renderMatches() {
       const now = Date.now();
       const liveMd = filtered.find(m => getLiveState(m, now).phase !== 'FT' && getLiveState(m, now).phase !== 'upcoming')?.matchday;
       const nextMd = filtered.find(m => getLiveState(m, now).phase === 'upcoming')?.matchday;
-      const showMd = liveMd || nextMd || 1;
+      const showMd = liveMd || nextMd || 3;
       filtered = MATCH_SCHEDULE.filter(m => m.matchday === showMd);
   }
 
@@ -896,7 +1024,9 @@ function renderTeamOverview(teamName) {
     const pastSim = MATCH_SCHEDULE.filter(m => m.phase === 'FT' && (m.homeTeam === teamName || m.awayTeam === teamName))
         .map(m => ({ home: m.homeTeam, homeScore: m.homeScore, away: m.awayTeam, awayScore: m.awayScore }));
 
-    const pastHtml = pastSim.map(m => {
+    const allPast = [...PAST_RESULTS.filter(m => m.home === teamName || m.away === teamName), ...pastSim];
+
+    const pastHtml = allPast.map(m => {
         const isHome = m.home === teamName;
         const opp = isHome ? m.away : m.home;
         const teamScore = isHome ? m.homeScore : m.awayScore;
