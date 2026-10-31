@@ -14,9 +14,9 @@
 body{margin:0;background:radial-gradient(ellipse at 50% -20%,#203248 0,transparent 50%),var(--bg);color:var(--text);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 button,input,select{font:inherit}
 a{color:inherit}
-.topbar{height:68px;border-bottom:1px solid #253244;background:#0b1018d9;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,56px);gap:16px}
-.brand{display:flex;align-items:center;gap:12px;font-weight:850;letter-spacing:.04em}
-.logo{width:38px;height:38px;border-radius:11px;background:var(--accent);color:#111a12;display:grid;place-items:center;font-weight:950;font-size:12px;box-shadow:0 0 24px #b9f36b25}
+.topbar{height:72px;border-bottom:1px solid #253244;background:#0b1018d9;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,56px);gap:16px}
+.brand{display:flex;align-items:center;gap:14px;font-weight:850;letter-spacing:.04em}
+.logo{width:46px;height:46px;border-radius:50%;object-fit:cover;box-shadow:0 0 15px rgba(185,243,107,0.15);border:1px solid var(--line);}
 .brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.19em;font-weight:700;margin-top:1px}
 .toplabel{color:var(--muted);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
 
@@ -192,7 +192,10 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><div class="logo">CEL2</div><div>CENTRAL EUROPEAN LEAGUE 2<small>SECOND DIVISION · THE ROAD TO CEL</small></div></div>
+  <div class="brand">
+    <img src="cefa_logo.png" class="logo" alt="CEFA Logo">
+    <div>CENTRAL EUROPEAN LEAGUE 2<small>SECOND DIVISION · THE ROAD TO CEL</small></div>
+  </div>
   <div class="toplabel">League centre&nbsp; / &nbsp;Standings</div>
 </header>
 
